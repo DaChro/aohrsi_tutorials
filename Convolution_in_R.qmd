@@ -1,6 +1,13 @@
 ---
-title: "Convoltion in R"
-format: html
+title: "Convolution in R"
+format: 
+  html:
+    code-link: false
+    header-includes:
+      - <link rel="preconnect" href="https://fonts.googleapis.com">
+      - <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      - <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
 engine: knitr
 filters:
  - webr
@@ -13,8 +20,30 @@ filters:
     background-color: #7AB629;
     border-color: #337ab7;
 }
-a:link {
+a:link,
+a:visited,
+a:hover{
   color: #7AB629;
+}
+/* Aktiver TOC-Link  */
+#TOC a.active,
+#TOC .active > a {
+  color: #fff !important;
+  background-color: #7AB629 !important;
+}
+
+
+/* Hover im TOC */
+#TOC a:hover {
+  color: #7AB629 !important;
+}
+
+:root, body {
+  font-family: "Mulish", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.quarto-code-links {
+  display: none !important;
 }
 ```
 
@@ -27,7 +56,7 @@ download.file(
   'https://raw.githubusercontent.com/DaChro/aohrsi_tutorials/main/data/convolution_example.tif',
   'convolution_example.tif'
 )
-
+webr::install("terra")
 
 ```
 
@@ -53,14 +82,13 @@ You can also use the command `setwd("path to directory in qoutes")`.
 
 Next, we need to extend our base R with additional functionality. For the following exercise, we will use the `terra` package for handling remote sensing images (and other raster data) and performing spatial convolutions. A package in R is kind of an extension providing additional functionality that is not available in the base R installation. As of now, there are almost 19000(!) packages available on [CRAN](https://cran.r-project.org/), which is R´s standard package repository. To install a package, you can either use the "Packages" pane in the lower right window (click on "Install" and search for the desired package) in Rstudio or simply use the `install.packages()` command:
 
-```{webr-r, eval=F}
+```{r, eval=F}
 install.packages("terra")
 ```
 
 Now you have downloaded the package. But it is not yet ready to use. The reason is that additional packages are not automatically "loaded" into an R session. Remember there are many thousands of packages available and every user usually has quite a lot of them installed. Automatically loading them for each session would unnecessarily blow up the software. This is why you simply load the functions of a package in your R session only when needed. To load the `terra` package in our R session, we can again use the "Packages" pane in the lower right window (It shows all installed packages and you can load the desired package by checking the box next to it) or simply use the `library()` command.
 
 ```{webr-r}
-webr::install("terra")
 library(terra) # please note that here you do not use quotation marks
 ```
 

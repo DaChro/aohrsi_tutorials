@@ -8,8 +8,8 @@ editor: visual
 
 number-sections: false
 highlight-style: tango
-theme: [yeti, theme.scss]
-css: style.css
+theme: [yeti]
+
 code-block-bg: true
 code-block-border-left: "#7AB629"
 
