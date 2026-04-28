@@ -373,7 +373,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"# Download a dataset\ndownload.file(\n  'https://raw.githubusercontent.com/DaChro/aohrsi_tutorials/main/data/convolution_example.tif',\n  'convolution_example.tif'\n)\nwebr::install(\"terra\")","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"setup","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-1","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"library(terra) # please note that here you do not use quotation marks","id":2,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-2","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"input_image <- rast(\"convolution_example.tif\") # note that here we only specify the file name, assuming that this file is in the folder that we specified as working directory","id":3,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-3","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"plotRGB(x=input_image)","id":4,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-4","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
+globalThis.qwebrCellDetails = [{"code":"# Download a dataset\ndownload.file(\n  'https://raw.githubusercontent.com/DaChro/aohrsi_tutorials/main/data/convolution_example.tif',\n  'convolution_example.tif'\n)\n#install and load terra\nwebr::install(\"terra\")\nlibrary(terra)","id":1,"options":{"autorun":"true","classes":"","comment":"","context":"setup","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-1","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"input_image <- rast(\"convolution_example.tif\") # note that here we only specify the file name, assuming that this file is in the folder that we specified as working directory","id":2,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-2","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"plotRGB(x=input_image)","id":3,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-3","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"kernel <- matrix(c(1,1,1,1,1,1,1,1,1),nrow = 3,byrow = T)\nkernel","id":4,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-4","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"kernel <- matrix(rep(1,9),nrow = 3,byrow = T)\nkernel","id":5,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-5","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"sma <- focal(x = input_image[[1]], w = kernel,fun=mean)","id":6,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-6","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"plot(x=sma, col=grey(1:255/255))","id":7,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-7","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"my_median_filter <- focal(x = input_image[[1]], w = kernel,fun=median)","id":8,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-8","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"input_image <- rast(\"convolution_example.tif\")\nkernel <- matrix(rep(1,9),nrow = 3,byrow = T)\noutput <- focal(x = input_image[[1]], w = kernel,fun=mean)\nplot(x=output, col=grey(1:255/255))","id":9,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-9","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"false"}},{"code":"input_image <- rast(\"convolution_example.tif\")\n# the line below defines the kernel as having 9 elements in 3 rows, so it is a 3*3 kernel\n# you can modify it by, e.g., using 25 elements and 5 rows by changing the corresponding values\nkernel <- matrix(rep(1,9),nrow = 3,byrow = T) \noutput <- focal(x = input_image[[1]], w = kernel,fun=mean)\nplot(x=output, col=grey(1:255/255))","id":10,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-10","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"input_image <- rast(\"convolution_example.tif\")\n# define new filter kernels by completing the line below\nkernel <- matrix(..., nrow = ..., byrow = T) \n# if you don´t want to apply the averaging, use \"sum\" instead of \"mean\" in the argument \"fun\" below\noutput <- focal(x = input_image[[1]], w = kernel,fun=mean)\nplot(x=output, col=grey(1:255/255))","id":11,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-11","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}},{"code":"input_image <- rast(\"convolution_example.tif\")\n\n#specify filter kernels for X- and Y-direction\nKernelX <- matrix(c(-1,0,1 ...), nrow = 3, byrow = T) #  insert the missing coefficients to define Kernel X as in slide 16\nKernelY <- matrix(c(1,2,1 ...), nrow = 3, byrow = T) # insert the missing coefficients to define Kernel Y as in slide 17\n\n#show kernels\nKernelX\nKernelY\n\n\n# complete the lines below toapply both kernels separately using focal() (only summing up the element-wise products)\n#store results (raster layers) in variables SobelX and SobelY\nSobelX <- focal(x = input_image[[1]], w = ... , fun= ...)\nSobelY <- focal(x = input_image[[1]], w =  ... , fun= ...)\n\n#compute final result as magnitude of results of both Kernels\nSobel <- sqrt(SobelX^2+SobelY^2)\n\n#visualize result\nplot(x=Sobel, col=grey(1:255/255))","id":12,"options":{"autorun":"false","classes":"","comment":"","context":"interactive","dpi":72,"editor-font-scale":"1","editor-max-height":"","editor-quick-suggestions":"false","editor-word-wrap":"true","fig-cap":"","fig-height":5,"fig-width":7,"label":"unnamed-chunk-12","message":"true","out-height":"","out-width":"700px","output":"true","read-only":"false","results":"markup","warning":"true"}}];
 
 </script>
 <script type="module">
@@ -1639,11 +1639,7 @@ globalThis.qwebrExecuteCode = async function (
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#preparation" id="toc-preparation" class="nav-link" data-scroll-target="#preparation">Preparation</a>
-  <ul class="collapse">
-  <li><a href="#set-working-directory" id="toc-set-working-directory" class="nav-link" data-scroll-target="#set-working-directory">Set working directory</a></li>
-  <li><a href="#install-and-load-required-packages" id="toc-install-and-load-required-packages" class="nav-link" data-scroll-target="#install-and-load-required-packages">Install and load required packages</a></li>
-  </ul></li>
+  <li><a href="#preparation" id="toc-preparation" class="nav-link" data-scroll-target="#preparation">Preparation</a></li>
   <li><a href="#load-data" id="toc-load-data" class="nav-link" data-scroll-target="#load-data">Load data</a></li>
   <li><a href="#spatial-convolution" id="toc-spatial-convolution" class="nav-link" data-scroll-target="#spatial-convolution">Spatial Convolution</a></li>
   <li><a href="#exercise" id="toc-exercise" class="nav-link" data-scroll-target="#exercise">Exercise</a></li>
@@ -1996,73 +1992,120 @@ a:hover{
 <hr>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>R is a language and environment for statistical computing with loads of functionality for handling and processing spatial data. It plays a large role in (spatial) data science and remote sensing, because it is open source, it is easily extensible, and it is used a lot by non-computer programmers to carry out programming tasks. R is freely available at <a href="http://www.r-project.org/">r-project.org</a>. A very useful software to help work with R is <a href="http://www.rstudio.org">Rstudio</a>. Rstudio is a comprehensive development and data analysis environment, that extends R with a GUI and lots of helpful tools and functions. It can be used instead of R’s own, rather rudimentary user interface. First install R, then install RStudio. The latter automatically connects to the existing R connection (but you need both, R and Rstudio).</p>
-<p>For those of you who have never worked with R before: this document is not an introduction to R (there are tons of introductions and tutorials available). Instead, this document is designed in a way such that you can simply copy paste the code line by line to conduct spatial convolution in R, and then simply replace the coefficients of the kernels and other convolution parameters to create different filters and inspect the results</p>
+<p>R is a language and environment for statistical computing with loads of functionality for handling and processing spatial data. It plays a large role in (spatial) data science and remote sensing, because it is open source, easily extensible, and it is used a lot by non-computer programmers to carry out programming tasks. R is freely available at <a href="http://www.r-project.org/">r-project.org</a>. A very useful software to help work with R is <a href="http://www.rstudio.org">Rstudio</a>. Rstudio is a comprehensive development and data analysis environment, that extends R with a GUI and lots of helpful tools and functions. It can be used instead of R’s own, rather rudimentary user interface. If you want to use R on your own system, first install R, then install RStudio. The latter automatically connects to the existing R connection (but you need both, R and Rstudio).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you’ve never worked with R before, note that this document is not an introduction to R (there are plenty of tutorials available online). Instead, it’s designed so you can execute the code line by line to perform spatial convolution in R, then easily modify the kernel coefficients and other convolution parameters to create different filters and inspect the results.</p>
+<p><strong>Also: this document uses webR with executable code cells, so you can run the entire tutorial directly in your browser—no R installation required.</strong> If you prefer to work with R on your own system, you can simply copy paste the code from the code cells into your own session. Some hints for installation and preparation of R on your own system are given below.</p>
+</div>
+</div>
 </section>
 <section id="preparation" class="level2">
 <h2 class="anchored" data-anchor-id="preparation">Preparation</h2>
-<section id="set-working-directory" class="level3">
-<h3 class="anchored" data-anchor-id="set-working-directory">Set working directory</h3>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The steps in this section are only neccessary when working in your own R session on your computer. If you want to work on this tutorial directly in your browser (without installing R), you don´t need this because all software is already loaded in the background and there is a virtual working directory including the example image. <strong>You can proceed directly to the “Load data” section.</strong></p>
+</div>
+</div>
+<section id="set-working-directory" class="level4">
+<h4 class="anchored" data-anchor-id="set-working-directory">Set working directory</h4>
 <p>As a first step, you should create a directory on your computer, in which you store the data and scripts for this exercise. Then set this directory as your working directory for this R session. The working directory is the folder in which R by default stores data or where it looks for data if no full file path is provided (if you set your working directory correctly, you can later load and save data without always specifying full paths but only use file names). You can set your working directory in R studio through the menu: Choose “Session”, then “Set Working Directory”, then “Choose Directory”.</p>
 <p>You can also use the command <code>setwd("path to directory in qoutes")</code>.</p>
 </section>
-<section id="install-and-load-required-packages" class="level3">
-<h3 class="anchored" data-anchor-id="install-and-load-required-packages">Install and load required packages</h3>
+<section id="install-and-load-required-packages" class="level4">
+<h4 class="anchored" data-anchor-id="install-and-load-required-packages">Install and load required packages</h4>
 <p>Next, we need to extend our base R with additional functionality. For the following exercise, we will use the <code>terra</code> package for handling remote sensing images (and other raster data) and performing spatial convolutions. A package in R is kind of an extension providing additional functionality that is not available in the base R installation. As of now, there are almost 19000(!) packages available on <a href="https://cran.r-project.org/">CRAN</a>, which is R´s standard package repository. To install a package, you can either use the “Packages” pane in the lower right window (click on “Install” and search for the desired package) in Rstudio or simply use the <code>install.packages()</code> command:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"terra"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now you have downloaded the package. But it is not yet ready to use. The reason is that additional packages are not automatically “loaded” into an R session. Remember there are many thousands of packages available and every user usually has quite a lot of them installed. Automatically loading them for each session would unnecessarily blow up the software. This is why you simply load the functions of a package in your R session only when needed. To load the <code>terra</code> package in our R session, we can again use the “Packages” pane in the lower right window (It shows all installed packages and you can load the desired package by checking the box next to it) or simply use the <code>library()</code> command.</p>
-<div id="qwebr-insertion-location-2"></div>
-<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra) <span class="co"># please note that here you do not use quotation marks</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p><em>Note: If you work on your script multiple times, you only need to do <code>install.packages()</code> once. <code>library()</code> on the other hand needs to be done in each session, because this loads the package for the currently running session (see above)</em></p>
 </section>
 </section>
 <section id="load-data" class="level2">
 <h2 class="anchored" data-anchor-id="load-data">Load data</h2>
 <p>Now that we have prepared our session, we can load the example image using the `rast`` function:</p>
-<div id="qwebr-insertion-location-3"></div>
+<div id="qwebr-insertion-location-2"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <p>We have now loaded the example image into our R session and assigned it to the variable <code>input_image</code> (by using the <code>&lt;-</code> operator). From now on, we can “access” the image by typing its variable <code>input_image</code>. To get an idea of of what you have loaded, simply type in the variable:</p>
 <pre class="{webr-r inspect}"><code>input_image</code></pre>
 <p>You get some information about the image, e.g., size, number of layers(bands), CRS, min and max values …</p>
 <p>To plot the image, you can use the <code>plotRGB()</code> function with the image as argument (more precisely, the variable holding the image):</p>
-<div id="qwebr-insertion-location-4"></div>
+<div id="qwebr-insertion-location-3"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <p><em>side note: Why <code>x=input_image</code> you ask? Because <code>x</code> is the name of the argument that is expected by the function <code>plotRGB()</code> to indicate which raster to plot, in our case the raster contained in <code>input_image</code>. If you check the help of this function (<code>?plotRGB</code>), you get information about the usage of it, e.g., which input arguments it expects and how they are called. You will find some other useful arguments for plotting remote sensing images such <code>r</code>, <code>g</code>, <code>b</code> (for defining which of the layers contains which color) or <code>stretch</code> (for applying a contrast stretch to the image when plotting). Here however, we only specify the raster to plot, which means that the default values will be used for all other arguments.</em></p>
 </section>
 <section id="spatial-convolution" class="level2">
 <h2 class="anchored" data-anchor-id="spatial-convolution">Spatial Convolution</h2>
-<p>For performing spatial convolution. We can use the <code>focal()</code> function of the <code>terra</code> package. This function requires as main inputs the raster layer we want convolve (argument <code>x</code>) and a matrix to use as filter kernel (argument <code>w</code>) . So before applying <code>focal</code>, let´s define the filter kernel. As you know from the lecture, the kernel is a matrix of coefficients. We can create matrices using the function <code>matrix()</code></p>
-<pre class="{webr-r filter matrix}"><code>kernel &lt;- matrix(c(1,1,1,1,1,1,1,1,1),nrow = 3,byrow = T)
-kernel</code></pre>
+<p>For performing spatial convolution. We can use the <code>focal()</code> function of the <code>terra</code> package. This function requires as main inputs the raster layer we want convolve (argument <code>x</code>) and a matrix to use as filter kernel (argument <code>w</code>) . So before applying <code>focal</code>, let´s define the filter kernel. As you know from the lecture, the kernel is a matrix of coefficients. We can create matrices using the function <code>matrix()</code>:</p>
+<div id="qwebr-insertion-location-4"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <p>As you can tell from the output, we have defined the kernel for a spatial moving average like the one you have seen in the lecture. The first argument for the <code>matrix()</code> function here is a vector of numbers that we want to fill the matrix (our kernel) with, i.e.&nbsp;our coefficients. We defined it by typing <code>c(1,1,1,1,1,1,1,1,1)</code>.</p>
 <p><em>side note: Please note, that since all coefficients are the same, there would be a shorter form to define them: <code>rep(1,9)</code>which basically means “repeat the number 1 nine times”, so the following does the same thing.</em></p>
-<pre class="{webr-r filter matrix2}"><code>kernel &lt;- matrix(rep(1,9),nrow = 3,byrow = T)
-kernel</code></pre>
+<div id="qwebr-insertion-location-5"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <p><em>The first version <code>c(1,1,1,1,1,1,1,1,1)</code> is chosen here for clarity, and because you can also use it for other filters with varying coefficients.</em></p>
 <p>The argument <code>nrow = 3</code> specifies the number of rows our matrix should have. There is also an argument <code>ncol</code> but we don´t need to set it, because R infers the number of columns from the number of elements provided to fill the matrix and the desired number of rows. Setting either <code>ncol</code> or <code>nrow</code> is enough. The argument <code>byrow=T</code> defines the order in which to fill the matrix with the elements, so in this case by row. It means that the numbers <code>c(1,1,1,1,1,1,1,1,1)</code> are filled in the matrix starting with the first row, then continuing with the second and so on. If we would not set this argument, R would use the default <code>byrow=FALSE</code>, which means it would fill the matrix by column. This would result in the same matrix in this case, but this can be different when you have other coefficients or other forms of matrices. So just keep in mind to use the correct ordering of coefficient in combination with the correct setting of <code>byrow</code> to end up with the filter kernel you actually want.</p>
 <p>Now that we have defined our filter kernel and loaded the image, we can apply the filter to one channel (band) of that image. A specific channel (band) of an image is selected using double brackets, e.g.&nbsp;<code>input_image[[1]]</code> for choosing layer 1.</p>
-<pre class="{webr-r filter focal mean}"><code>sma &lt;- focal(x = input_image[[1]], w = kernel,fun=mean)</code></pre>
+<div id="qwebr-insertion-location-6"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <p>Here we have applied the function <code>focal()</code> on the layer 1 of the image <code>input_image</code> using the kernel/matrix called <code>kernel</code>. As you can see, we have also set an argument <code>fun</code>. This defines the function to apply to the products resulting from multiplying all the coefficients in the kernel <code>w</code> with the corresponding pixel values in the image <code>x</code>. By default (if we don´t set <code>fun</code>) the function will simply apply <code>sum</code>, i.e.&nbsp;sum up all the products. In the lecture we have defined most of the filters with the mean, i.e.&nbsp;we divided the sum of all products by the number of coefficients. To do that with <code>focal</code>, we can simply set <code>fun=mean</code> so the mean of all products is being computed. Another way to get the same results would be to stick with <code>sum</code> (i.e., do not set the argument <code>fun</code>) and include the division by 9 directly in the filter kernel by defining the coefficients accordingly with <code>c(1/9,1/9,1/9,1/9,1/9,1/9,1/9,1/9,1/9)</code> or <code>rep(1/9,9)</code>.</p>
 <p>We can plot the result by:</p>
-<pre class="{webr-r plot result}"><code>plot(x=sma, col=grey(1:255/255))</code></pre>
-<p>And we can save it (e.g.&nbsp;to open and inspect it in QGIS) via:</p>
-<pre class="{webr-r save result}"><code>writeRaster(x=sma,file="sma.tif", overwrite = T)</code></pre>
+<div id="qwebr-insertion-location-7"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>When working on your own system, you can also can save it (e.g.&nbsp;to open and inspect it in QGIS) via:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeRaster</span>(<span class="at">x=</span>sma,<span class="at">file=</span><span class="st">"sma.tif"</span>, <span class="at">overwrite =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Instead of the moving average, we could also apply the median without having to change anything about the kernel. We simply use <code>fun=median</code> in the function <code>focal</code>.</p>
-<pre class="{webr-r focal median}"><code>my_median_filter &lt;- focal(x = input_image[[1]], w = kernel,fun=median)
-writeRaster(my_median_filter,"median.tif", overwrite = T)</code></pre>
+<div id="qwebr-insertion-location-8"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </section>
 <section id="exercise" class="level2">
 <h2 class="anchored" data-anchor-id="exercise">Exercise</h2>
 <p>Using the code snippets above, try out different filter configurations and inspect their results on the input image. For inspecting the results, export them (<code>writeRaster</code>, see above) and open them in QGIS:</p>
 <ol type="1">
-<li><p>Apply a standard deviation filter with a 3x3 kernel. Check the result on the pixel level: are the pixel values identical to what you would expect given the calculation rules shown in the lecture?</p></li>
-<li><p>Apply the moving average, median and standard deviation filters above with a different filter kernel size and check the impact on the result.</p></li>
-<li><p>Jensen (2016) provides a list with some selected filters (see learnweb). Apply some of them and inspect the results.</p></li>
+<li>The code cell below shows again the application of the spatial moving window filter (see above). Modify it to apply a standard deviation filter with a 3x3 kernel. Check the result.</li>
+</ol>
+<div id="qwebr-insertion-location-9"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<ol start="2" type="1">
+<li>Modify the code cell below to apply the moving average, median and standard deviation filters above with a different filter kernel size and check the impact on the result.</li>
+</ol>
+<div id="qwebr-insertion-location-10"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<ol start="3" type="1">
+<li>Jensen (2016) provides a list with some selected filters (see learnweb). Apply some of them and inspect the results.</li>
+</ol>
+<div id="qwebr-insertion-location-11"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<ol start="4" type="1">
 <li><p>Implement the Sobel operator by choosing appropriate filter coefficients and a suitable <code>fun</code> argument and compare the result with the sobel operator from OTB in QGIS.</p>
 <p><em>Hint: you can first compute the X and Y component with the corresponding filters, and then combine them using the equation given in the lecture. The command for calculating the square root is <code>sqrt()</code>. Squaring works with <code>^2</code>, so for squaring thev alues of a raster use <code>raster^2</code>.</em></p></li>
-<li><p>Apply the Sobel operator to enhance only horizontal and only vertical edges individually and inspect the results.</p></li>
+</ol>
+<div id="qwebr-insertion-location-12"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<ol start="5" type="1">
+<li><p>Now use the code cell above to apply the Sobel operator to enhance <em>only horizontal and only vertical edges</em> individually and inspect the results. Hint: you only need to adapt the line applying <code>sqrt()</code>.</p></li>
 <li><p>The <code>focal()</code>function also provides the optional arguments <code>pad</code> and <code>padValue</code>. Using the help <code>?focal()</code> and thinking back to the lecture, find out what they are for, how to use them and how they would influence the result.</p></li>
 </ol>
 </section>

@@ -56,9 +56,11 @@ download.file(
   'https://raw.githubusercontent.com/DaChro/aohrsi_tutorials/main/data/convolution_example.tif',
   'convolution_example.tif'
 )
+#install and load terra
 webr::install("terra")
-
+library(terra)
 ```
+
 
 *Course "Analysis of high-resolution remote sensing imagery"* - **Institute for Geoinformatics - University of Muenster** - christian.knoth\@uni-muenster.de
 
@@ -66,19 +68,30 @@ webr::install("terra")
 
 ## Introduction
 
-R is a language and environment for statistical computing with loads of functionality for handling and processing spatial data. It plays a large role in (spatial) data science and remote sensing, because it is open source, it is easily extensible, and it is used a lot by non-computer programmers to carry out programming tasks. R is freely available at [r-project.org](http://www.r-project.org/). A very useful software to help work with R is [Rstudio](http://www.rstudio.org). Rstudio is a comprehensive development and data analysis environment, that extends R with a GUI and lots of helpful tools and functions. It can be used instead of R's own, rather rudimentary user interface. First install R, then install RStudio. The latter automatically connects to the existing R connection (but you need both, R and Rstudio).
+R is a language and environment for statistical computing with loads of functionality for handling and processing spatial data. It plays a large role in (spatial) data science and remote sensing, because it is open source, easily extensible, and it is used a lot by non-computer programmers to carry out programming tasks. R is freely available at [r-project.org](http://www.r-project.org/). A very useful software to help work with R is [Rstudio](http://www.rstudio.org). Rstudio is a comprehensive development and data analysis environment, that extends R with a GUI and lots of helpful tools and functions. It can be used instead of R's own, rather rudimentary user interface. If you want to use R on your own system, first install R, then install RStudio. The latter automatically connects to the existing R connection (but you need both, R and Rstudio).
 
-For those of you who have never worked with R before: this document is not an introduction to R (there are tons of introductions and tutorials available). Instead, this document is designed in a way such that you can simply copy paste the code line by line to conduct spatial convolution in R, and then simply replace the coefficients of the kernels and other convolution parameters to create different filters and inspect the results
+::: callout-tip
+If you’ve never worked with R before, note that this document is not an introduction to R (there are plenty of tutorials available online). Instead, it’s designed so you can execute the code line by line to perform spatial convolution in R, then easily modify the kernel coefficients and other convolution parameters to create different filters and inspect the results.
+
+**Also: this document uses webR with executable code cells, so you can run the entire tutorial directly in your browser—no R installation required.** If you prefer to work with R on your own system, you can simply copy paste the code from the code cells into your own session. Some hints for installation and preparation of R on your own system are given below.
+:::
+
 
 ## Preparation
 
-### Set working directory
+::: callout-caution
+## Note
+
+The steps in this section are only neccessary when working in your own R session on your computer. If you want to work on this tutorial directly in your browser (without installing R), you don´t need this because all software is already loaded in the background and there is a virtual working directory including the example image. **You can proceed directly to the "Load data" section.** 
+
+:::
+#### Set working directory
 
 As a first step, you should create a directory on your computer, in which you store the data and scripts for this exercise. Then set this directory as your working directory for this R session. The working directory is the folder in which R by default stores data or where it looks for data if no full file path is provided (if you set your working directory correctly, you can later load and save data without always specifying full paths but only use file names). You can set your working directory in R studio through the menu: Choose "Session", then "Set Working Directory", then "Choose Directory".
 
 You can also use the command `setwd("path to directory in qoutes")`.
 
-### Install and load required packages
+####   Install and load required packages
 
 Next, we need to extend our base R with additional functionality. For the following exercise, we will use the `terra` package for handling remote sensing images (and other raster data) and performing spatial convolutions. A package in R is kind of an extension providing additional functionality that is not available in the base R installation. As of now, there are almost 19000(!) packages available on [CRAN](https://cran.r-project.org/), which is R´s standard package repository. To install a package, you can either use the "Packages" pane in the lower right window (click on "Install" and search for the desired package) in Rstudio or simply use the `install.packages()` command:
 
@@ -88,7 +101,7 @@ install.packages("terra")
 
 Now you have downloaded the package. But it is not yet ready to use. The reason is that additional packages are not automatically "loaded" into an R session. Remember there are many thousands of packages available and every user usually has quite a lot of them installed. Automatically loading them for each session would unnecessarily blow up the software. This is why you simply load the functions of a package in your R session only when needed. To load the `terra` package in our R session, we can again use the "Packages" pane in the lower right window (It shows all installed packages and you can load the desired package by checking the box next to it) or simply use the `library()` command.
 
-```{webr-r}
+```{r, eval=FALSE}
 library(terra) # please note that here you do not use quotation marks
 ```
 
@@ -120,9 +133,9 @@ plotRGB(x=input_image)
 
 ## Spatial Convolution
 
-For performing spatial convolution. We can use the `focal()` function of the `terra` package. This function requires as main inputs the raster layer we want convolve (argument `x`) and a matrix to use as filter kernel (argument `w`) . So before applying `focal`, let´s define the filter kernel. As you know from the lecture, the kernel is a matrix of coefficients. We can create matrices using the function `matrix()`
+For performing spatial convolution. We can use the `focal()` function of the `terra` package. This function requires as main inputs the raster layer we want convolve (argument `x`) and a matrix to use as filter kernel (argument `w`) . So before applying `focal`, let´s define the filter kernel. As you know from the lecture, the kernel is a matrix of coefficients. We can create matrices using the function `matrix()`:
 
-```{webr-r filter matrix}
+```{webr-r}
 kernel <- matrix(c(1,1,1,1,1,1,1,1,1),nrow = 3,byrow = T)
 kernel
 ```
@@ -131,7 +144,7 @@ As you can tell from the output, we have defined the kernel for a spatial moving
 
 *side note: Please note, that since all coefficients are the same, there would be a shorter form to define them: `rep(1,9)`which basically means "repeat the number 1 nine times", so the following does the same thing.*
 
-```{webr-r filter matrix2}
+```{webr-r}
 kernel <- matrix(rep(1,9),nrow = 3,byrow = T)
 kernel
 ```
@@ -142,7 +155,7 @@ The argument `nrow = 3` specifies the number of rows our matrix should have. The
 
 Now that we have defined our filter kernel and loaded the image, we can apply the filter to one channel (band) of that image. A specific channel (band) of an image is selected using double brackets, e.g. `input_image[[1]]` for choosing layer 1.
 
-```{webr-r filter focal mean}
+```{webr-r}
 sma <- focal(x = input_image[[1]], w = kernel,fun=mean)
 ```
 
@@ -150,37 +163,92 @@ Here we have applied the function `focal()` on the layer 1 of the image `input_i
 
 We can plot the result by:
 
-```{webr-r plot result}
+```{webr-r}
 plot(x=sma, col=grey(1:255/255))
 ```
 
-And we can save it (e.g. to open and inspect it in QGIS) via:
+When working on your own system, you can also can save it (e.g. to open and inspect it in QGIS) via:
 
-```{webr-r save result}
+```{r, eval=FALSE}
 writeRaster(x=sma,file="sma.tif", overwrite = T)
 ```
 
 Instead of the moving average, we could also apply the median without having to change anything about the kernel. We simply use `fun=median` in the function `focal`.
 
-```{webr-r focal median}
+```{webr-r}
 my_median_filter <- focal(x = input_image[[1]], w = kernel,fun=median)
-writeRaster(my_median_filter,"median.tif", overwrite = T)
 ```
 
 ## Exercise
 
 Using the code snippets above, try out different filter configurations and inspect their results on the input image. For inspecting the results, export them (`writeRaster`, see above) and open them in QGIS:
 
-1.  Apply a standard deviation filter with a 3x3 kernel. Check the result on the pixel level: are the pixel values identical to what you would expect given the calculation rules shown in the lecture?
+1.  The code cell below shows again the application of the spatial moving window filter (see above). Modify it to apply a standard deviation filter with a 3x3 kernel. Check the result.
 
-2.  Apply the moving average, median and standard deviation filters above with a different filter kernel size and check the impact on the result.
+```{webr-r}
+#| warning: false
+input_image <- rast("convolution_example.tif")
+kernel <- matrix(rep(1,9),nrow = 3,byrow = T)
+output <- focal(x = input_image[[1]], w = kernel,fun=mean)
+plot(x=output, col=grey(1:255/255))
+
+```
+
+2.  Modify the code cell below to apply the moving average, median and standard deviation filters above with a different filter kernel size and check the impact on the result.
+
+```{webr-r}
+input_image <- rast("convolution_example.tif")
+# the line below defines the kernel as having 9 elements in 3 rows, so it is a 3*3 kernel
+# you can modify it by, e.g., using 25 elements and 5 rows by changing the corresponding values
+kernel <- matrix(rep(1,9),nrow = 3,byrow = T) 
+output <- focal(x = input_image[[1]], w = kernel,fun=mean)
+plot(x=output, col=grey(1:255/255))
+```
 
 3.  Jensen (2016) provides a list with some selected filters (see learnweb). Apply some of them and inspect the results.
+
+```{webr-r}
+input_image <- rast("convolution_example.tif")
+# define new filter kernels by completing the line below
+kernel <- matrix(..., nrow = ..., byrow = T) 
+# if you don´t want to apply the averaging, use "sum" instead of "mean" in the argument "fun" below
+output <- focal(x = input_image[[1]], w = kernel,fun=mean)
+plot(x=output, col=grey(1:255/255))
+
+```
+
 
 4.  Implement the Sobel operator by choosing appropriate filter coefficients and a suitable `fun` argument and compare the result with the sobel operator from OTB in QGIS.
 
     *Hint: you can first compute the X and Y component with the corresponding filters, and then combine them using the equation given in the lecture. The command for calculating the square root is `sqrt()`. Squaring works with `^2`, so for squaring thev alues of a raster use `raster^2`.*
 
-5.  Apply the Sobel operator to enhance only horizontal and only vertical edges individually and inspect the results.
+```{webr-r}
+input_image <- rast("convolution_example.tif")
+
+#specify filter kernels for X- and Y-direction
+KernelX <- matrix(c(-1,0,1 ...), nrow = 3, byrow = T) #  insert the missing coefficients to define Kernel X as in slide 16
+KernelY <- matrix(c(1,2,1 ...), nrow = 3, byrow = T) # insert the missing coefficients to define Kernel Y as in slide 17
+
+#show kernels
+KernelX
+KernelY
+
+
+# complete the lines below toapply both kernels separately using focal() (only summing up the element-wise products)
+#store results (raster layers) in variables SobelX and SobelY
+SobelX <- focal(x = input_image[[1]], w = ... , fun= ...)
+SobelY <- focal(x = input_image[[1]], w =  ... , fun= ...)
+
+#compute final result as magnitude of results of both Kernels
+Sobel <- sqrt(SobelX^2+SobelY^2)
+
+#visualize result
+plot(x=Sobel, col=grey(1:255/255))
+
+```
+
+
+
+5.  Now use the code cell above to apply the Sobel operator to enhance *only horizontal and only vertical edges* individually and inspect the results. Hint: you only need to adapt the line applying `sqrt()`.
 
 6.  The `focal()`function also provides the optional arguments `pad` and `padValue`. Using the help `?focal()` and thinking back to the lecture, find out what they are for, how to use them and how they would influence the result.
