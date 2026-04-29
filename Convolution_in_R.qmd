@@ -50,15 +50,16 @@ a:hover{
 ```{webr-r}
 
 #| context: setup
+#
 
 # Download a dataset
 download.file(
   'https://raw.githubusercontent.com/DaChro/aohrsi_tutorials/main/data/convolution_example.tif',
   'convolution_example.tif'
 )
-#install and load terra
 webr::install("terra")
 library(terra)
+
 ```
 
 
@@ -109,7 +110,8 @@ library(terra) # please note that here you do not use quotation marks
 
 ## Load data
 
-Now that we have prepared our session, we can load the example image using the \`rast\`\` function:
+Now that we have prepared our session, we can load the example image using the `rast` function:
+
 
 ```{webr-r}
 input_image <- rast("convolution_example.tif") # note that here we only specify the file name, assuming that this file is in the folder that we specified as working directory
@@ -117,7 +119,7 @@ input_image <- rast("convolution_example.tif") # note that here we only specify 
 
 We have now loaded the example image into our R session and assigned it to the variable `input_image` (by using the `<-` operator). From now on, we can "access" the image by typing its variable `input_image`. To get an idea of of what you have loaded, simply type in the variable:
 
-```{webr-r inspect}
+```{webr-r}
 input_image
 ```
 
@@ -177,13 +179,14 @@ Instead of the moving average, we could also apply the median without having to 
 
 ```{webr-r}
 my_median_filter <- focal(x = input_image[[1]], w = kernel,fun=median)
+plot(x=my_median_filter, col=grey(1:255/255))
 ```
 
 ## Exercise
 
 Using the code snippets above, try out different filter configurations and inspect their results on the input image. For inspecting the results, export them (`writeRaster`, see above) and open them in QGIS:
 
-1.  The code cell below shows again the application of the spatial moving window filter (see above). Modify it to apply a standard deviation filter with a 3x3 kernel. Check the result.
+1.  The code cell below loads the image and shows again the application of the spatial moving window filter (see above). Modify it to apply a standard deviation filter with a 3x3 kernel. Check the result.
 
 ```{webr-r}
 #| warning: false
@@ -209,7 +212,7 @@ plot(x=output, col=grey(1:255/255))
 
 ```{webr-r}
 input_image <- rast("convolution_example.tif")
-# define new filter kernels by completing the line below
+# define new filter kernels by replacing "..." with the correct values/arguments
 kernel <- matrix(..., nrow = ..., byrow = T) 
 # if you don´t want to apply the averaging, use "sum" instead of "mean" in the argument "fun" below
 output <- focal(x = input_image[[1]], w = kernel,fun=mean)
@@ -234,7 +237,7 @@ KernelX
 KernelY
 
 
-# complete the lines below toapply both kernels separately using focal() (only summing up the element-wise products)
+# complete the lines below to apply both kernels separately using focal() (summing up the element-wise products instead of mean)
 #store results (raster layers) in variables SobelX and SobelY
 SobelX <- focal(x = input_image[[1]], w = ... , fun= ...)
 SobelY <- focal(x = input_image[[1]], w =  ... , fun= ...)
@@ -249,6 +252,6 @@ plot(x=Sobel, col=grey(1:255/255))
 
 
 
-5.  Now use the code cell above to apply the Sobel operator to enhance *only horizontal and only vertical edges* individually and inspect the results. Hint: you only need to adapt the line applying `sqrt()`.
+5.  Now modify the code cell above to apply the Sobel operator to enhance *only horizontal and only vertical edges* individually and inspect the results. Hint: you only need to adapt the line which applies `sqrt()`.
 
 6.  The `focal()`function also provides the optional arguments `pad` and `padValue`. Using the help `?focal()` and thinking back to the lecture, find out what they are for, how to use them and how they would influence the result.
