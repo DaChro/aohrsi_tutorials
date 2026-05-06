@@ -210,7 +210,7 @@ plot(texture_feature)
 ### The influence of direction, scale and resolution
 
 
-- The `glcm` package allows to compute the GLCM for selected directions individually Try out the GLCM feature "dissimilarity" and see how the direction influences the result in different areas of the image
+- As explained above, the `glcm` package allows to compute the GLCM for selected directions individually. Try out the GLCM feature "dissimilarity" and see how the direction influences the result in different areas of the image
 - Try to find a direction and window size that optimally extract the distinct texture of the field in the south
 
 ```{r, echo=FALSE}
