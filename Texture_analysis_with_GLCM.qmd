@@ -1,0 +1,277 @@
+---
+title: "Texture Analysis using the GLCM "
+format: 
+  html:
+    code-link: false
+    header-includes:
+      - <link rel="preconnect" href="https://fonts.googleapis.com">
+      - <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      - <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+engine: knitr
+filters:
+ - webr
+---
+
+```{css, echo=FALSE}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #7AB629;
+    border-color: #337ab7;
+}
+a:link,
+a:visited,
+a:hover{
+  color: #7AB629;
+}
+/* Aktiver TOC-Link  */
+#TOC a.active,
+#TOC .active > a {
+  color: #fff !important;
+  background-color: #7AB629 !important;
+}
+
+
+/* Hover im TOC */
+#TOC a:hover {
+  color: #7AB629 !important;
+}
+
+:root, body {
+  font-family: "Mulish", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.quarto-code-links {
+  display: none !important;
+}
+```
+```{css, echo=FALSE}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    z-index: 2;
+    color: #fff;
+    background-color: #7AB629;
+    border-color: #337ab7;
+}
+a:link {
+  color: #7AB629;
+}
+```
+
+```{webr-r}
+
+#| context: setup
+#
+
+# Download a datasets
+download.file(
+  'https://raw.githubusercontent.com/DaChro/aohrsi_tutorials/main/data/texture_example.tif',
+  'texture_example.tif'
+)
+download.file(
+  'https://raw.githubusercontent.com/DaChro/aohrsi_tutorials/main/data/texture_example_high_res.tif',
+  'texture_example_high_res.tif'
+)
+download.file(
+  'https://raw.githubusercontent.com/DaChro/aohrsi_tutorials/main/data/target_field.png',
+  'target_field.png'
+)
+# Install packages
+webr::install("raster")
+webr::install("glcm")
+webr::install("stars")
+webr::install("magick")
+webr::install("tmap")
+library(raster)
+library(glcm)
+library(stars)
+library(magick)
+
+
+```
+
+
+_Course "Analysis of high-resolution remote sensing imagery"_ - **Institute for Geoinformatics - University of Muenster** - christian.knoth@uni-muenster.de
+
+---
+
+
+The following tasks are to be done using the example images "texture_example" and "texture_example_high_res", provided in learnweb.
+We will focus on the green channel (layer 2).
+
+## GLCM in OTB
+- Open the example image `texture_example.tif` (provided in learnweb) in QGIS
+- Using the OTB application "HaralickTextureExtraction", extract different texture features from the image
+    - Look at areas in the image with seemingly distinct textural features. Compare the results of different GLCM features on these areas. Do the results match your assumptions?
+  - Try out different values for the radius (defines window size for the moving window for which to calculate the GLCM). How does this parameter influence the results?
+  
+## GLCM in R
+
+Now we will try out GLCM computation with R 
+  
+  
+::: callout-tip
+If you want to work on your own computer, you need to install the packages `glcm` and `raster` and load them in your R-session. When working directly in the browser, the packages are already loaded.
+
+```{r example_glcm2,eval=FALSE}
+#installing is only needed once. Only execute the two lines below if you still need to install the packages:
+install.packages("raster") 
+install.packages("glcm")
+
+#load packages, this needs to be done in every new session
+library(glcm)
+library(raster)
+```
+:::
+
+Let´s first load the image...
+
+```{webr-r}
+example <- stack("texture_example.tif") 
+# this expects that texture_example.tif is within 
+# your current working directory, otherwise use
+# the full file path within the stack command
+
+```
+
+...and plot it.
+
+```{webr-r}
+plotRGB(example)
+```
+
+The command `glcm` allows to compute different glcm features. Below is an example computing the "Entropy" feature:
+```{r, eval=F}
+texture_feature <- glcm(x=example[[2]],window = c(11,11)
+                        ,shift = list(c(0,1),c(1,1),c(1,0),c(1,-1)),statistics="entropy")
+```
+
+Here `x` is the input image layer to compute the GLCM on, `window` is the size (in pixel) of the moving window, `shift` determines the direction of the GLCM in terms of shift between the pixels of the pixel pairs, and is used with `c(shift in rows,shift in columns)`. Finally, `statistics` determines the glcm feature to compute. Note: the command above computes the glcm for all four directions and returns the mean glcm feature value for them. To compute only a single direction, simply use `shift=c(shift in rows, shift in columns)`.
+
+Here is an example for loading an image and then computing the GLCM dissimilarity on band 2 of this image, within a 11*11 window. The computation might take a couple of seconds to process:
+
+
+```{webr-r}
+
+#load the image: this expects that texture_example.tif 
+#is within your current working directory, otherwise use 
+#the full file path within the stack command
+example <- stack("texture_example.tif")
+
+# show info about image
+example
+
+#compute texture as mentioned in text
+texture_feature <-
+  glcm(
+    x = example[[2]],
+    window = c(11, 11) ,
+    shift = list(c(1, 0)),
+    statistics = "dissimilarity"
+  )
+
+#visualize result 
+plot(texture_feature)
+```
+
+
+## Practice
+
+  - Find out about the different GLCM features offered
+```{webr-r}
+?glcm
+```  
+
+  - Certain texture measures sometimes are named differently in different papers and software packages and sometimes they are also implemented differently. Find the one in OTB that is most closely related to "Contrast" in the `glcm` package.  Compute it in R and OTB and visually compare the results
+    - What could potential differences be caused by?
+    
+```{webr-r}
+
+#load the image
+example <- stack("texture_example.tif")
+
+#compute texture 
+texture_feature <-
+  glcm(
+    x = example[[2]],
+    window = c(11, 11) ,
+    shift = list(c(1, 0)),
+    statistics = "contrast"
+  )
+
+#visualize result 
+plot(texture_feature)
+```
+    
+### The influence of direction, scale and resolution
+
+
+- The `glcm` package allows to compute the GLCM for selected directions individually Try out the GLCM feature "dissimilarity" and see how the direction influences the result in different areas of the image
+- Try to find a direction and window size that optimally extract the distinct texture of the field in the south
+
+```{r, echo=FALSE}
+magick::image_draw(magick::image_read("data/target_field.png"))
+```
+
+```{webr-r}
+
+#load the image
+example <- stack("texture_example.tif")
+
+#compute texture --> try different directions and window sizes to "highlight" the texture of
+# the target field
+texture_feature <-
+  glcm(
+    x = example[[2]],
+    window = c(11, 11) ,
+    shift = list(c(1, 0)),
+    statistics = "dissimilarity"
+  )
+
+#visualize result
+plot(texture_feature)
+```
+
+
+
+- The example image is originally available in a higher resolution. Let´s see how the spatial resolution of input data leads to different effects of a texture measure
+  - Load the high-resolution image `texture_example_high_res.tif`
+  - compute the glcm "dissimilarity" (0°, window size  21) and compare the result with the one from the low resolution image (dissimilarity, 0°, window size 11): What/where do you see main differences? What could be the reason for these differences?
+
+```{webr-r}
+
+#load the images
+example <- stack("texture_example.tif")
+example_high_res <- stack("texture_example_high_res.tif")
+
+#plot them next to each other
+par(mfrow = c(1, 2))
+plotRGB(example)
+plotRGB(example_high_res)
+
+
+#compute texture 
+texture_feature1 <-
+  glcm(
+    x = example[[2]],
+    window = c(11, 11) ,
+    shift = list(c(1, 0)),
+    statistics = "dissimilarity"
+  )
+
+#now complete the following lines by replacing the "..." with the correct values
+texture_feature2 <-
+  glcm(
+    x = example[[2]],
+    window = c(..., ...) ,
+    shift = list(c(..., ...)),
+    statistics = "dissimilarity"
+  )
+
+#visualize results next two each other
+par(mfrow = c(1, 2))
+plot(texture_feature1)
+plot(texture_feature2)
+```
+
+
