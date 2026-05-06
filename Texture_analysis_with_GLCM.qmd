@@ -146,7 +146,11 @@ texture_feature <- glcm(x=example[[2]],window = c(11,11)
                         ,shift = list(c(0,1),c(1,1),c(1,0),c(1,-1)),statistics="entropy")
 ```
 
-Here `x` is the input image layer to compute the GLCM on, `window` is the size (in pixel) of the moving window, `shift` determines the direction of the GLCM in terms of shift between the pixels of the pixel pairs, and is used with `c(shift in rows,shift in columns)`. Finally, `statistics` determines the glcm feature to compute. Note: the command above computes the glcm for all four directions and returns the mean glcm feature value for them. To compute only a single direction, simply use `shift=c(shift in rows, shift in columns)`.
+Here, `x` is the input image layer used to compute the GLCM. `window` specifies the size, in pixels, of the moving window over which the GLCM is calculated. `shift` defines the spatial offset between the pixel pairs used in the GLCM and is provided as `c(row shift, column shift)`. For example, `c(0, 1)` means a shift of 0 rows and 1 column, so each pixel is compared with the pixel immediately to its right when computing co-occurrences of pixel values. Finally, statistics specifies which texture feature should be computed from the GLCM. 
+
+:::callout-tip
+Note: the command above computes the glcm with an offset of 1 pixel in four directions and returns the mean glcm feature value for them. If you want to compute texture features only for a single direction, simply provide a list with only one direction to the `shift` argument, e.g.: `shift = list(c(0, 1))`. You can also define larger offsets and other directions, e.g. `shift = list(c(2, 1))`.
+:::
 
 Here is an example for loading an image and then computing the GLCM dissimilarity on band 2 of this image, within a 11*11 window. The computation might take a couple of seconds to process:
 

@@ -2052,7 +2052,20 @@ Tip
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>texture_feature <span class="ot">&lt;-</span> <span class="fu">glcm</span>(<span class="at">x=</span>example[[<span class="dv">2</span>]],<span class="at">window =</span> <span class="fu">c</span>(<span class="dv">11</span>,<span class="dv">11</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                        ,<span class="at">shift =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>),<span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>)),<span class="at">statistics=</span><span class="st">"entropy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Here <code>x</code> is the input image layer to compute the GLCM on, <code>window</code> is the size (in pixel) of the moving window, <code>shift</code> determines the direction of the GLCM in terms of shift between the pixels of the pixel pairs, and is used with <code>c(shift in rows,shift in columns)</code>. Finally, <code>statistics</code> determines the glcm feature to compute. Note: the command above computes the glcm for all four directions and returns the mean glcm feature value for them. To compute only a single direction, simply use <code>shift=c(shift in rows, shift in columns)</code>.</p>
+<p>Here, <code>x</code> is the input image layer used to compute the GLCM. <code>window</code> specifies the size, in pixels, of the moving window over which the GLCM is calculated. <code>shift</code> defines the spatial offset between the pixel pairs used in the GLCM and is provided as <code>c(row shift, column shift)</code>. For example, <code>c(0, 1)</code> means a shift of 0 rows and 1 column, so each pixel is compared with the pixel immediately to its right when computing co-occurrences of pixel values. Finally, statistics specifies which texture feature should be computed from the GLCM.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note: the command above computes the glcm with an offset of 1 pixel in four directions and returns the mean glcm feature value for them. If you want to compute texture features only for a single direction, simply provide a list with only one direction to the <code>shift</code> argument, e.g.: <code>shift = list(c(0, 1))</code>. You can also define larger offsets and other directions, e.g.&nbsp;<code>shift = list(c(2, 1))</code>.</p>
+</div>
+</div>
 <p>Here is an example for loading an image and then computing the GLCM dissimilarity on band 2 of this image, within a 11*11 window. The computation might take a couple of seconds to process:</p>
 <div id="qwebr-insertion-location-4"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
